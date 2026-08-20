@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRD: Push iOS 灵动岛（Live Activity）需求文档</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; max-width: 1080px; margin: 0 auto; padding: 24px 32px 80px; color: #1a1a2e; background: #fff; }
+        h1 { font-size: 26px; border-bottom: 3px solid #e94560; padding-bottom: 10px; margin-top: 40px; color: #1a1a2e; }
+        h2 { font-size: 20px; margin-top: 40px; border-left: 4px solid #e94560; padding-left: 12px; color: #2c3e50; }
+        h3 { font-size: 16px; margin-top: 28px; color: #34495e; }
+        .meta { background: #f8f9fa; border-radius: 8px; padding: 14px 20px; margin: 16px 0; font-size: 13px; line-height: 1.8; border: 1px solid #dee2e6; }
+        .meta span { display: inline-block; margin-right: 20px; }
+        .tag { display: inline-block; background: #e8f0fe; color: #1a73e8; border-radius: 12px; padding: 2px 12px; font-size: 12px; margin-right: 6px; }
+        .tag-orange { background: #fef3e8; color: #e8741a; }
+        .tag-green { background: #e6f4ea; color: #137333; }
+        .tag-red { background: #fce8e6; color: #c5221f; }
+        .tag-purple { background: #f3e8fd; color: #7627bb; }
+        table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 13px; }
+        th, td { border: 1px solid #dee2e6; padding: 8px 12px; text-align: left; vertical-align: top; }
+        th { background: #1a1a2e; color: #fff; font-weight: 600; font-size: 12px; }
+        tr:nth-child(even) { background: #f8f9fa; }
+        .callout { background: #fef7e0; border-left: 4px solid #f9ab00; padding: 12px 16px; margin: 14px 0; border-radius: 4px; font-size: 13px; }
+        .callout-info { background: #e8f0fe; border-left: 4px solid #1a73e8; padding: 12px 16px; margin: 14px 0; border-radius: 4px; font-size: 13px; }
+        .callout-warn { background: #fce8e6; border-left: 4px solid #c5221f; padding: 12px 16px; margin: 14px 0; border-radius: 4px; font-size: 13px; }
+        .callout-green { background: #e6f4ea; border-left: 4px solid #137333; padding: 12px 16px; margin: 14px 0; border-radius: 4px; font-size: 13px; }
+        ul, ol { padding-left: 22px; }
+        li { margin: 5px 0; }
+        code { background: #f1f3f4; padding: 2px 6px; border-radius: 3px; font-size: 12px; font-family: 'SF Mono', Menlo, monospace; }
+        .num { font-family: 'SF Mono', Menlo, Monaco, monospace; }
+        .up { color: #e74c3c; font-weight: bold; }
+        .down { color: #27ae60; font-weight: bold; }
+        .highlight { background: #ffeaa7; font-weight: bold; }
+        .formula { background: #f1f8e9; border: 1px solid #aed581; border-radius: 6px; padding: 12px 16px; margin: 12px 0; font-size: 13px; font-family: 'SF Mono', Menlo, monospace; }
+        .sensitivity { background: #f8f9fa; border-radius: 6px; padding: 10px 14px; margin: 8px 0; }
+        .toc { background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 16px 24px; margin: 16px 0; font-size: 14px; }
+        .toc a { color: #1a73e8; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .toc ol { margin: 0; }
+        .toc li { margin: 3px 0; }
+        .owner-box { background: #fff5f5; border: 1px solid #f5c2c7; border-radius: 8px; padding: 14px 18px; margin: 14px 0; }
+        .owner-box table { margin: 6px 0; }
+        .flow { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 14px 0; }
+        .flow-item { background: #e8f0fe; border: 1px solid #a8c7fa; border-radius: 20px; padding: 4px 14px; font-size: 12px; }
+        .flow-arrow { color: #6c757d; font-size: 16px; }
+        .flow-item.trigger { background: #fef3e8; border-color: #f5c26b; }
+        .flow-item.display { background: #e6f4ea; border-color: #95d6a8; }
+        .flow-item.end { background: #fce8e6; border-color: #f19b95; }
+        hr { border: none; border-top: 1px solid #eee; margin: 32px 0; }
+        .footer { margin-top: 40px; padding-top: 12px; border-top: 1px solid #dee2e6; font-size: 11px; color: #6c757d; }
+        .tbl-scroll { overflow-x: auto; }
+        @media (max-width: 640px) { body { padding: 16px; } }
+    </style>
+</head>
+<body>
+
+<h1>PRD: Push iOS 灵动岛（Live Activity）需求文档</h1>
+<div class="meta">
+    <span><strong>关联工单</strong>: <a href="https://visable.atlassian.net/browse/UC-448" target="_blank">UC-448</a></span>
+    <span><strong>状态</strong>: <span class="tag tag-orange">Draft — 待评审</span></span>
+        <span><strong>工单 Assignee</strong>: Jolyne Zhang（2026-08-20 修正，原 Kailiang 为 BI）</span>
+    <span><strong>负责人</strong>: Jolyne Zhang (业务) / 陈峰 (客户端·V技术) / 杨焱 (后端·V技术) / Kailiang Zhan (BI)</span>
+    <span><strong>版本</strong>: v0.1 (2026-08-20)</span>
+    <span><strong>评审计划</strong>: 2026 年 8 月底</span>
+</div>
+
+<div class="toc">
+<strong>目录</strong>
+<ol>
+    <li><a href="#s1">背景与目标</a></li>
+    <li><a href="#s2">现状数据基准（CW33 实际）</a></li>
+    <li><a href="#s3">业务收益测算</a></li>
+    <li><a href="#s4">业务需求定义与业务规则</a></li>
+    <li><a href="#s5">技术方案与分工</a></li>
+    <li><a href="#s6">埋点与数据需求</a></li>
+    <li><a href="#s7">实验设计与成功指标</a></li>
+    <li><a href="#s8">风险与依赖</a></li>
+    <li><a href="#s9">里程碑与排期</a></li>
+    <li><a href="#s10">评审问题清单</a></li>
+</ol>
+</div>
+
+<hr>
+
+<!-- ==================== 1. 背景与目标 ==================== -->
+<h2 id="s1">1. 背景与目标</h2>
+
+<h3>1.1 背景</h3>
+<ul>
+    <li><strong>行业趋势</strong>：iOS Live Activity（灵动岛实时活动）自 iOS 16.1 推出以来，已成为高意图的持续互动界面。相比一次性推送通知，Live Activity 在灵动岛/锁屏<strong>持续显示 8-12 小时</strong>，用单一持久界面替代多条推送，缓解通知疲劳（美国用户日均收 46 条推送）并提升可见性。</li>
+    <li><strong>用户价值</strong>：B2B 买家在"发出询盘 → 等待卖家回复"过程中存在高频查看需求，Live Activity 可将"等待状态"可视化，减少焦虑、提升回访。</li>
+    <li><strong>iPhone 18 事件</strong>：iPhone 18 Pro 灵动岛物理尺寸将缩小 ~35%（20.7mm → 13.5mm），Apple 保持 point 值不变（compact 250pt/230pt），标准 Live Activity 自动适配，<strong>不构成阻塞</strong>。</li>
+    <li><strong>Visable 现状</strong>：iOS Push 仅支持纯文本/系统默认样式，无富媒体、无 Live Activity 能力；当前系统消息类策略（MESSAGE_SENT + UNANSWERED）是 Push AB 的核心来源（60.5%），但依赖重复推送维持可见性。</li>
+</ul>
+
+<h3>1.2 目标</h3>
+<table>
+    <tr><th style="width:20%">目标</th><th style="width:45%">内容</th><th>成功指标（一期）</th></tr>
+    <tr>
+        <td><strong>G1: 提升转化</strong></td>
+        <td>通过 Live Activity 提升系统消息类场景的打开率与 AB 贡献</td>
+        <td>消息类 open rate 提升 ≥20%（相对）；增量 AB ≥ +2.0/天（中性假设）</td>
+    </tr>
+    <tr>
+        <td><strong>G2: 降低疲劳</strong></td>
+        <td>用持续状态界面替代同场景重复推送，减少推送量</td>
+        <td>消息类推送量下降 ≥20% 且打开率不降；退订率不上升</td>
+    </tr>
+    <tr>
+        <td><strong>G3: 能力沉淀</strong></td>
+        <td>沉淀 iOS Live Activity 技术能力，为后续场景扩展（订单/物流跟踪等）铺路</td>
+        <td>技术方案可复用、埋点体系完整</td>
+    </tr>
+</table>
+
+<div class="callout-warn">
+    <strong>⚠️ 关键边界（Apple 红线）</strong>：Apple 明确禁止 Live Activity 用于<strong>促销、优惠、营销活动或广告</strong>，且必须由<strong>用户主动操作触发</strong>。因此本需求一期<strong>仅覆盖系统通知/交易状态跟踪类场景</strong>，营销类策略（RECOMMENDATION/RFQ_marketing/TRENDING）不纳入 Live Activity 范围。
+</div>
+
+<hr>
+
+<!-- ==================== 2. 现状数据基准 ==================== -->
+<h2 id="s2">2. 现状数据基准（CW33 实际）</h2>
+<p>数据来源：<a href="push_cw33_wow_analysis_2026-08-19.html" target="_blank">Push CW33 WoW 分析</a>（2026-08-19），口径 v0.3，日均值。</p>
+
+<h3>2.1 Push 渠道漏斗（CW33 日均）</h3>
+<div class="tbl-scroll">
+<table>
+    <tr><th>阶段</th><th>数值</th><th>转化率</th><th>WoW</th><th>说明</th></tr>
+    <tr><td>送达 receive_uv</td><td class="num">2,038</td><td>—</td><td class="up">+5.2%</td><td>Firebase 才有发送量，Redshift 只到 receive</td></tr>
+    <tr><td>打开 open_uv</td><td class="num">93.4</td><td class="num">4.58%</td><td class="down">-1.5%</td><td>open rate 微降，RFQ batch 占比提升所致</td></tr>
+    <tr><td>AB</td><td class="num highlight">40.3</td><td class="num">43.1% (open→AB)</td><td class="up">+18.0%</td><td>RECOMMENDATION 日常化 + undefined 改善驱动</td></tr>
+    <tr><td>AB2</td><td class="num">17.7</td><td class="num">43.9% (AB→AB2)</td><td class="up">+6.9%</td><td>复购质量优于大盘（大盘 AB2 -4.8%）</td></tr>
+</table>
+</div>
+
+<h3>2.2 候选场景策略数据（CW33 日均）</h3>
+<div class="tbl-scroll">
+<table>
+    <tr><th>策略</th><th>类型</th><th>receive</th><th>open</th><th>open rate</th><th>AB</th><th>AB2</th><th>AB2 率</th><th>适合 LA？</th></tr>
+    <tr style="background:#e8f8f5;">
+        <td><strong>MESSAGE_SENT</strong>（新消息提醒）</td>
+        <td>系统</td>
+        <td class="num">116</td><td class="num">39.4</td><td class="num">34.0%</td>
+        <td class="num highlight">20.0</td><td class="num">9.7</td><td class="num">48.8%</td>
+        <td><span class="tag tag-green">✅ 核心场景</span></td>
+    </tr>
+    <tr style="background:#e8f8f5;">
+        <td><strong>UNANSWERED</strong>（未回复提醒）</td>
+        <td>系统</td>
+        <td class="num">74</td><td class="num">14.7</td><td class="num">19.9%</td>
+        <td class="num">4.4</td><td class="num">1.0</td><td class="num">22.6%</td>
+        <td><span class="tag tag-green">✅ 核心场景</span></td>
+    </tr>
+    <tr>
+        <td>PN_RECOMMENDATION</td>
+        <td>营销</td>
+        <td class="num">306</td><td class="num">30.1</td><td class="num">9.8%</td>
+        <td class="num">7.4</td><td class="num">2.4</td><td class="num">32.8%</td>
+        <td><span class="tag tag-red">❌ Apple 禁止</span></td>
+    </tr>
+    <tr>
+        <td>PN_RFQ_marketing</td>
+        <td>营销</td>
+        <td class="num">1,866</td><td class="num">24.3</td><td class="num">1.3%</td>
+        <td class="num">5.6</td><td class="num">2.3</td><td class="num">40.7%</td>
+        <td><span class="tag tag-red">❌ Apple 禁止</span></td>
+    </tr>
+    <tr>
+        <td>PN_TRENDING_PRODUCTS</td>
+        <td>营销</td>
+        <td class="num">1,135</td><td class="num">2.9</td><td class="num">0.3%</td>
+        <td class="num">0.7</td><td class="num">0.4</td><td class="num">57.1%</td>
+        <td><span class="tag tag-red">❌ Apple 禁止</span></td>
+    </tr>
+    <tr>
+        <td>PN_PERSONALISED_SEARCH</td>
+        <td>营销</td>
+        <td class="num">306</td><td class="num">9.1</td><td class="num">3.0%</td>
+        <td class="num">1.3</td><td class="num">0.6</td><td class="num">44.4%</td>
+        <td><span class="tag tag-red">❌ Apple 禁止</span></td>
+    </tr>
+</table>
+</div>
+
+<div class="callout-info">
+    <strong>场景选择逻辑</strong>：MESSAGE_SENT + UNANSWERED 合计 <strong>receive 190/天、open 54.1/天、AB 24.4/天、AB2 10.7/天</strong>，占 Push AB 总量 60.5%，且均属于"用户主动行为触发 + 等待状态持续"类型——与 Apple Live Activity 适用场景（配送/ETA/状态跟踪）高度匹配。<br>
+    <strong>⚠️ 待确认</strong>：iOS 用户占比（device=ios 的 receive 占比）——埋点已有 device 维度，需拉取确认。测算先按 <strong>40%</strong> 假设。
+</div>
+
+<hr>
+
+<!-- ==================== 3. 业务收益测算 ==================== -->
+<h2 id="s3">3. 业务收益测算</h2>
+
+<h3>3.1 收益逻辑</h3>
+<div class="formula">
+增量 AB = iOS 可触达 open_uv × 打开率相对提升 × open→AB 转化率<br>
+其中 iOS 可触达 open_uv = 场景 open_uv × iOS 用户占比 × Live Activity 支持率（iOS 16.1+，≈100% 近年设备）
+</div>
+
+<ul>
+    <li><strong>打开率提升来源</strong>：灵动岛/锁屏<strong>常驻显示 8h</strong>（比一次性通知曝光时长提升 10 倍+），用户无需进入通知中心即可看到并点击；等待场景用户有高频查看动机。</li>
+    <li><strong>行业佐证</strong>：Pushwoosh 2025 基准电商 iOS CTR 3.05%（营销类），而 Visable 系统消息 open rate 已达 34%（消息类天然高）；Live Activity 场景（如配送）用户注意力显著高于一次性通知。</li>
+    <li><strong>推送量下降收益</strong>：同一会话内以 Live Activity 替代重复推送（如 UNANSWERED 的多轮提醒），降低推送总量 → 降低退订风险（定性收益，见 G2）。</li>
+</ul>
+
+<h3>3.2 测算参数（保守/中性/乐观）</h3>
+<div class="tbl-scroll">
+<table>
+    <tr><th>参数</th><th>保守</th><th>中性</th><th>乐观</th><th>依据</th></tr>
+    <tr>
+        <td>iOS 用户占比</td><td class="num">35%</td><td class="num">40%</td><td class="num">45%</td>
+        <td>待从 device 维度确认；B2B 买家 iOS 占比通常 35-50%</td>
+    </tr>
+    <tr>
+        <td>打开率相对提升（open rate ×）</td><td class="num">+15%</td><td class="num">+30%</td><td class="num">+50%</td>
+        <td>消息类 open rate 已 28.5%，基数高故提升幅度取保守区间；常驻显示 + 等待场景动机</td>
+    </tr>
+    <tr>
+        <td>open→AB 率</td><td class="num" colspan="3">44.8%（消息类：24.4 AB / 54.1 open）</td>
+        <td>用 CW33 消息类实际转化率，不另做假设</td>
+    </tr>
+</table>
+</div>
+
+<h3>3.3 收益测算结果（一期：MESSAGE_SENT + UNANSWERED）</h3>
+<div class="tbl-scroll">
+<table>
+    <tr><th>指标（日均）</th><th>基线（CW33）</th><th>保守</th><th>中性</th><th>乐观</th></tr>
+    <tr>
+        <td>iOS 可触达 open</td>
+        <td class="num">—</td>
+        <td class="num">18.9（54.1×35%）</td>
+        <td class="num">21.6（54.1×40%）</td>
+        <td class="num">24.3（54.1×45%）</td>
+    </tr>
+    <tr>
+        <td>打开增量（open/天）</td>
+        <td class="num">—</td>
+        <td class="num">+2.8</td>
+        <td class="num">+6.5</td>
+        <td class="num">+12.2</td>
+    </tr>
+    <tr style="background:#e8f8f5;">
+        <td><strong>AB 增量（/天）</strong></td>
+        <td class="num">24.4（消息类基线）</td>
+        <td class="num highlight">+1.3</td>
+        <td class="num highlight">+2.9</td>
+        <td class="num highlight">+5.5</td>
+    </tr>
+    <tr>
+        <td>AB2 增量（/天）</td>
+        <td class="num">10.7</td>
+        <td class="num">+0.6</td>
+        <td class="num">+1.3</td>
+        <td class="num">+2.4</td>
+    </tr>
+    <tr>
+        <td><strong>年化 AB 增量</strong></td>
+        <td class="num">—</td>
+        <td class="num">+474</td>
+        <td class="num">+1,059</td>
+        <td class="num">+2,008</td>
+    </tr>
+</table>
+</div>
+
+<h3>3.4 相对大盘影响（中性）</h3>
+<div class="tbl-scroll">
+<table>
+    <tr><th>对比口径</th><th>基线</th><th>中性增量</th><th>相对提升</th></tr>
+    <tr><td>Push AB</td><td class="num">40.3/天</td><td class="num">+2.9/天</td><td class="num up">+7.2%</td></tr>
+    <tr><td>App AB</td><td class="num">887.0/天</td><td class="num">+2.9/天</td><td class="num up">+0.33%</td></tr>
+    <tr><td>Push AB2</td><td class="num">17.7/天</td><td class="num">+1.3/天</td><td class="num up">+7.3%</td></tr>
+</table>
+</div>
+
+<h3>3.5 敏感性分析矩阵（年化 AB 增量）</h3>
+<div class="tbl-scroll">
+<table>
+    <tr><th>iOS 占比 \ 打开率提升</th><th>+15%（保守）</th><th>+30%（中性）</th><th>+50%（乐观）</th></tr>
+    <tr><td>35%</td><td class="num">+415</td><td class="num">+830</td><td class="num">+1,383</td></tr>
+    <tr style="background:#e8f8f5;"><td>40%</td><td class="num">+474</td><td class="num">+1,059</td><td class="num">+1,758</td></tr>
+    <tr><td>45%</td><td class="num">+534</td><td class="num">+1,186</td><td class="num">+1,977</td></tr>
+    <tr><td>50%</td><td class="num">+593</td><td class="num">+1,314</td><td class="num">+2,190</td></tr>
+</table>
+</div>
+
+<div class="callout">
+    <strong>测算结论</strong>：中性假设下（iOS 40%、打开率 +30%），一期场景年化增量 <strong>AB +1,059、AB2 +483</strong>，相对 Push 渠道 AB 提升约 <strong>+7.2%</strong>。收益集中度高、风险可控；叠加"推送量下降 → 退订率下降"的长期定性收益，投入产出合理（开发投入约 6-8 人周，见 §9）。
+</div>
+
+<div class="callout-warn">
+    <strong>⚠️ 测算前提（评审前需确认）</strong>：① iOS 用户占比 40% 为假设值，需从 <code>staging.stg_ga_app_{ep,wlw}_events</code> 按 device 维度实际拉取；② "+30% 打开率提升"参考常驻显示曝光优势与等待场景动机，需通过 AB 实验验证（见 §7）；③ 消息类 open→AB 44.8% 为 CW33 实际值，若 iOS/Android 转化率差异大需分端重算。
+</div>
+
+<hr>
+
+<!-- ==================== 4. 业务需求定义 ==================== -->
+<h2 id="s4">4. 业务需求定义与业务规则</h2>
+
+<h3>4.1 需求总述</h3>
+<p>在 iOS 16.1+ 设备上，为<strong>消息/询盘状态跟踪类系统通知</strong>提供 Live Activity（灵动岛实时活动）展示：当用户处于"等待卖家回复"状态时，灵动岛与锁屏持续展示状态卡片，状态变化实时更新，点击卡片进入 App 对应会话页。同一会话不再重复推送多轮提醒，以持续状态界面替代。</p>
+
+<h3>4.2 一期业务场景</h3>
+<div class="tbl-scroll">
+<table>
+    <tr><th style="width:16%">场景</th><th style="width:22%">触发条件（用户主动行为）</th><th style="width:38%">Live Activity 展示内容</th><th style="width:24%">替代的现有推送</th></tr>
+    <tr>
+        <td><strong>S1: 询盘等待回复</strong><br><span class="tag tag-green">P0</span></td>
+        <td>买家发出询盘（Contact Supplier / RFQ 提交）后，进入等待卖家回复状态</td>
+        <td>灵动岛：询盘图标 + "等待回复"状态；锁屏扩展态：询盘摘要（产品名）、已等待时长、卖家人数</td>
+        <td>替代 UNANSWERED_REMINDER 的重复提醒推送</td>
+    </tr>
+    <tr>
+        <td><strong>S2: 新消息待查看</strong><br><span class="tag tag-green">P0</span></td>
+        <td>收到卖家新消息（会话中）</td>
+        <td>灵动岛：消息图标 + "N 条新消息"（<strong>不展示消息内容</strong>，规避敏感数据限制）；锁屏：消息发送者名称 + 摘要提示（可配置）</td>
+        <td>替代 MESSAGE_SENT 的重复推送</td>
+    </tr>
+    <tr>
+        <td><strong>S3: 多会话聚合</strong><br><span class="tag tag-orange">P1</span></td>
+        <td>同时有多个未回复会话（并发 ≤5 个）</td>
+        <td>极简式：单图标 + 汇总数量 "3 个待回复"；点击进入消息列表页</td>
+        <td>减少多会话场景的推送轰炸</td>
+    </tr>
+</table>
+</div>
+
+<h3>4.3 业务规则</h3>
+
+<h4>规则 R1: 场景边界（红线）</h4>
+<ul>
+    <li>Live Activity <strong>仅限系统通知/交易状态类</strong>场景；营销类（推品/促销/权益）<strong>一律不使用</strong> Live Activity（Apple App Review 红线）。</li>
+    <li>非用户主动触发的事件（如纯系统广播）不得启动 Live Activity。</li>
+</ul>
+
+<h4>规则 R2: 授权与权限</h4>
+<ul>
+    <li><strong>iOS 17+</strong>：用户已开启 Push 通知时，Live Activity 默认随之开启（系统行为），无需额外弹窗；用户可在系统设置中单独关闭。</li>
+    <li><strong>iOS 16.x</strong>：首次启动 Live Activity 时系统弹窗单独授权（"允许实时活动？"）。</li>
+    <li>退订关系：跟随现有 Push 退订体系——用户退订 Push 后不再启动 Live Activity；已启动的即时结束。</li>
+</ul>
+
+<h4>规则 R3: 生命周期</h4>
+<div class="flow">
+    <span class="flow-item trigger">触发（用户主动行为）</span><span class="flow-arrow">→</span>
+    <span class="flow-item display">启动 LA（灵动岛 compact + 锁屏）</span><span class="flow-arrow">→</span>
+    <span class="flow-item display">状态更新（回复到达 / 等待超时 / 多消息聚合）</span><span class="flow-arrow">→</span>
+    <span class="flow-item end">结束（任务完成 / 用户关闭 / 超时 8h）</span>
+</div>
+<table>
+    <tr><th style="width:18%">节点</th><th style="width:30%">条件</th><th>动作</th></tr>
+    <tr><td><strong>启动</strong></td><td>买家发出询盘 / 收到第一条新消息</td><td>创建 Live Activity（ActivityKit start），携带会话 ID、产品信息（S1）/消息数（S2）</td></tr>
+    <tr><td><strong>更新</strong></td><td>① 收到新回复（状态未终结）② 等待时长跨越阈值（如 6h/24h）③ 新消息累计</td><td>推送更新（APNs push-to-update 或 App 内 update），刷新状态文案</td></tr>
+    <tr><td><strong>结束</strong></td><td>① 卖家已回复且用户已查看 ② 用户手动关闭 ③ 超过 8h（灵动岛）/ 12h（锁屏）系统自动收起</td><td>结束活动（end），<strong>同时发送一条收尾推送</strong>（如"卖家回复了你的询盘"）引导回访</td></tr>
+</table>
+
+<h4>规则 R4: 与现有推送的关系（替代而非叠加）</h4>
+<ul>
+    <li>同一会话处于 Live Activity 活跃期间，<strong>不重复发送</strong>同场景的普通推送（MESSAGE_SENT / UNANSWERED_REMINDER 跳过）；状态变化由 Live Activity 更新承载。</li>
+    <li>Live Activity <strong>结束</strong>时发一条收尾推送（通知内容可含按钮/富文本，不受 LA 限制）。</li>
+    <li>预期效果：消息类推送量下降（G2），打开率提升（G1）。</li>
+</ul>
+
+<h4>规则 R5: 疲劳度与频控</h4>
+<ul>
+    <li>沿用现有 Push 疲劳度体系：Live Activity 的启动/更新计入同一会话的触达频次；单用户并发 Live Activity ≤5 个（系统上限）。</li>
+    <li>同一用户 24h 内启动 Live Activity 上限：待定（建议 ≤3 次，与现有消息类频控对齐）。</li>
+</ul>
+
+<h4>规则 R6: 敏感数据合规</h4>
+<ul>
+    <li>灵动岛/锁屏<strong>不展示消息正文内容</strong>（Apple 敏感数据限制），仅展示状态、数量、发送者名称。</li>
+    <li>询盘内容摘要（产品名/规格）仅展示在锁屏扩展态，且长度 ≤2 行。</li>
+</ul>
+
+<h4>规则 R7: 双端一致性</h4>
+<ul>
+    <li>iOS 走 Live Activity；Android 维持现有推送（无灵动岛能力），但<strong>节奏对齐</strong>：Android 在 LA 结束点（收尾推送）同步收到推送。</li>
+    <li>两端文案共用模板体系（沿用现有策略表配置），减少维护成本。</li>
+</ul>
+
+<h3>4.4 非功能需求</h3>
+<table>
+    <tr><th style="width:25%">类别</th><th>要求</th></tr>
+    <tr><td>兼容性</td><td>iOS 16.1+；iPhone 18 新灵动岛（iOS 27）自动适配；iOS 27 横屏使用 <code>isDynamicIslandLimitedInWidth</code> 提供替代视图</td></tr>
+    <tr><td>性能</td><td>LA 更新延迟 ≤30s（服务端事件 → 设备渲染）；更新频率遵循 iOS 18 限制（5-15s 刷新周期）</td></tr>
+    <tr><td>电量</td><td>更新采用事件驱动（非轮询），避免无意义刷新</td></tr>
+    <tr><td>国际化</td><td>LA 文案支持多语言（沿用 Push 现有 i18n 体系）</td></tr>
+</table>
+
+<hr>
+
+<!-- ==================== 5. 技术方案与分工 ==================== -->
+<h2 id="s5">5. 技术方案与分工</h2>
+
+<h3>5.1 技术架构总览</h3>
+<div class="formula">
+[业务事件源: 会话/询盘/消息状态] → [服务端 LA 状态服务] → [APNs push-to-start/update] → [wlw-mobile-app: ActivityKit + WidgetKit 渲染] → [灵动岛/锁屏展示] → [点击深链回 App]
+</div>
+<ul>
+    <li><strong>推送通道</strong>：APNs（Live Activity 专用 token，与 FCM 普通推送并行）；FCM 继续承载普通推送与收尾推送。</li>
+    <li><strong>启动方式</strong>：App 内 ActivityKit 启动（S1/S2 触发时 App 处于活跃/前台）；iOS 17.2+ 支持 Push-to-Start（作为增强项 P1）。</li>
+</ul>
+
+<h3>5.2 分工矩阵（RACI）</h3>
+<div class="tbl-scroll">
+<table>
+    <tr><th style="width:22%">工作项</th><th style="width:13%">业务（Jolyne）</th><th style="width:13%">客户端（陈峰·V技术）</th><th style="width:13%">后端（杨焱·V技术）</th><th style="width:13%">数据（Jolyne+凯亮）</th><th>说明</th></tr>
+    <tr><td>场景定义与业务规则</td><td><strong>R/A</strong></td><td>C</td><td>C</td><td>C</td><td>§4 内容，评审后定稿</td></tr>
+    <tr><td>收益测算与实验设计</td><td><strong>R/A</strong></td><td>—</td><td>—</td><td>C</td><td>AB 实验方案、样本量、指标口径</td></tr>
+    <tr><td>ActivityKit + WidgetKit 集成</td><td>—</td><td><strong>R/A</strong></td><td>—</td><td>—</td><td>灵动岛三态视图（compact/minimal/expanded）+ 锁屏视图</td></tr>
+    <tr><td>Notification Service Extension</td><td>—</td><td><strong>R/A</strong></td><td>—</td><td>—</td><td>先盘点是否存在；如无，评估是否纳入本需求（富媒体/按钮前置）</td></tr>
+    <tr><td>APNs 证书与密钥</td><td>—</td><td>C</td><td><strong>R/A</strong></td><td>—</td><td>p8 证书申请、token 管理、密钥轮换</td></tr>
+    <tr><td>LA 状态服务（事件源接入）</td><td>—</td><td>—</td><td><strong>R/A</strong></td><td>—</td><td>监听会话/询盘/消息事件 → 生成 LA 启动/更新/结束指令</td></tr>
+    <tr><td>FCM payload 扩展</td><td>—</td><td>C</td><td><strong>R/A</strong></td><td>—</td><td>收尾推送携带 LA 上下文、深链参数（push_id/strategy_id/landing_page_id）</td></tr>
+    <tr><td>深链跳转</td><td>—</td><td><strong>R/A</strong></td><td>C</td><td>—</td><td>LA 点击 → 会话页/消息列表页；沿用现有 Deep Link 规范</td></tr>
+    <tr><td>埋点事件设计</td><td><strong>R/A</strong></td><td>C</td><td>—</td><td>C</td><td>la_start/la_update/la_tap/la_end + by-push-id 关联</td></tr>
+    <tr><td>数据报表与看板</td><td><strong>R/A</strong></td><td>—</td><td>—</td><td><strong>R/A</strong></td><td>LA 漏斗：启动率 → tap-through → UV → AB</td></tr>
+    <tr><td>真机测试与验收</td><td>C</td><td><strong>R/A</strong></td><td>C</td><td>—</td><td>覆盖 iPhone 14 Pro ~ 18 全机型 + iOS 27 横屏</td></tr>
+</table>
+</div>
+<p style="font-size:12px;color:#6c757d;">R=Responsible（执行） A=Accountable（负责/拍板） C=Consulted（咨询） I=Informed（知会）</p>
+
+<h3>5.3 客户端技术要点（陈峰）</h3>
+<ul>
+    <li><strong>ActivityAttributes / ContentState</strong>：静态数据（会话 ID、产品信息）与动态数据（消息数、等待时长）分离，支持 <code>staleDate</code> 过期展示。</li>
+    <li><strong>三态视图</strong>：compact（灵动岛左/右端）+ minimal（多活动折叠）+ expanded（长按展开）+ 锁屏横幅；使用 <code>ContainerRelativeShape</code> 匹配圆角。</li>
+    <li><strong>iOS 27 横屏</strong>：<code>isDynamicIslandLimitedInWidth</code> 环境值判断，提供替代紧凑视图（如仅图标）。</li>
+    <li><strong>更新方式</strong>：优先 push-to-update（APNs），App 活跃时可用 App 内 update 兜底。</li>
+    <li><strong>并发管理</strong>：单用户 ≤5 个活动，超出时按"最旧优先"结束或聚合为 S3 汇总卡。</li>
+</ul>
+
+<h3>5.4 后端技术要点（杨焱 · V技术）</h3>
+<ul>
+    <li><strong>LA token 管理</strong>：客户端启动 LA 后上报 pushToken → 服务端存储并绑定会话；与 FCM token 分开管理。</li>
+    <li><strong>事件驱动更新</strong>：会话服务/消息服务的事件流 → LA 状态服务 → APNs 下发（push-type: liveactivity）。</li>
+    <li><strong>生命周期指令</strong>：start/update/end 三类指令 + 幂等控制（同一会话多次事件合并）。</li>
+    <li><strong>降级策略</strong>：APNs 失败/超时 → 回落到现有普通推送（保证触达不丢）。</li>
+</ul>
+
+<h3>5.5 技术前置确认项</h3>
+<ol>
+    <li>wlw-mobile-app 是否已集成 ActivityKit？iOS 最低支持版本？（陈峰）</li>
+    <li>iOS Notification Service Extension 是否存在？（决定是否可做富媒体/按钮收尾推送）（陈峰）</li>
+    <li>现有 FCM 链路是否已支持 APNs 旁路（或需要新建 APNs 通道）？（杨焱）</li>
+    <li>会话/询盘事件流是否已存在于现有后端架构？（决定 LA 状态服务的接入成本）（杨焱）</li>
+</ol>
+
+<hr>
+
+<!-- ==================== 6. 埋点与数据需求 ==================== -->
+<h2 id="s6">6. 埋点与数据需求</h2>
+
+<h3>6.1 Live Activity 事件设计</h3>
+<div class="tbl-scroll">
+<table>
+    <tr><th style="width:16%">事件</th><th style="width:34%">字段（沿用 Push 埋点规范）</th><th>用途</th></tr>
+    <tr><td><code>la_start</code></td><td>push_id, strategy_id, session_id, device, platform, language, user_uuid</td><td>启动率（触发事件 → LA 成功启动）</td></tr>
+    <tr><td><code>la_update</code></td><td>+ update_type（reply/reminder/aggregate）, content_state_version</td><td>更新成功率与延迟</td></tr>
+    <tr><td><code>la_tap</code></td><td>+ surface（dynamic_island_compact / dynamic_island_expanded / lock_screen）</td><td>tap-through 率（分展示面）</td></tr>
+    <tr><td><code>la_end</code></td><td>+ end_reason（completed / dismissed / timeout / push_optout）</td><td>早退信号（用户手动关闭率）</td></tr>
+</table>
+</div>
+
+<h3>6.2 归因与口径</h3>
+<ul>
+    <li>LA 事件与 by-push-id 关联：LA 启动时继承触发会话的 strategy_id（如 UNANSWERED），tap 后深链携带 push_id/strategy_id/landing_page_id，下游 session 归因沿用现有 <strong>session-based 归因</strong>。</li>
+    <li><strong>漏斗口径</strong>：LA 启动率 → LA tap-through → App 打开 UV → AB/AB2（沿用 <code>active_buyers.channel='push'</code>）。</li>
+    <li>新增看板指标：LA 启动率、分展示面 tap-through 率、LA 打开 UV 增量、LA 归因 AB/AB2、推送量下降幅度（替代验证）。</li>
+</ul>
+
+<hr>
+
+<!-- ==================== 7. 实验设计 ==================== -->
+<h2 id="s7">7. 实验设计与成功指标</h2>
+
+<h3>7.1 AB 实验设计（一期验证）</h3>
+<div class="tbl-scroll">
+<table>
+    <tr><th style="width:18%">维度</th><th>设计</th></tr>
+    <tr><td><strong>实验组</strong></td><td>iOS 用户：Live Activity 展示（替代同场景重复推送），收尾推送保留</td></tr>
+    <tr><td><strong>对照组</strong></td><td>iOS 用户：维持现有推送策略（MESSAGE_SENT / UNANSWERED 原逻辑）</td></tr>
+    <tr><td><strong>分流</strong></td><td>按 user_uuid 哈希分层分流，50/50；分层维度：device 平台、新老用户</td></tr>
+    <tr><td><strong>样本量</strong></td><td>参考 CW33 消息类 iOS receive ~76/天；实验期 ≥4 周（确保 ≥2,000 iOS 触达样本，参考富文本实验"样本不足"教训）</td></tr>
+    <tr><td><strong>主要指标</strong></td><td>① 消息类 open rate（相对提升目标 ≥+20%）② 消息类 AB（增量目标 ≥+1.5/天）③ 推送量下降幅度（≥20%）</td></tr>
+    <tr><td><strong>次要指标</strong></td><td>退订率、LA tap-through 率、LA→UV 转化、AB2 率</td></tr>
+    <tr><td><strong>止损规则</strong></td><td>退订率相对提升 >10% 或 open rate 下降 >5% → 提前终止，回落现有策略</td></tr>
+</table>
+</div>
+
+<h3>7.2 成功指标（Go/No-Go 门槛）</h3>
+<div class="callout-green">
+    <strong>一期上线（实验通过）条件</strong>：① 消息类 open rate 相对提升 ≥20% 且统计显著（p&lt;0.05）；② 消息类 AB 增量 ≥ +1.5/天；③ 退订率无显著上升。<br>
+    <strong>二期扩展条件</strong>：一期通过后，将 S3 多会话聚合、iOS 17.2 Push-to-Start、更多状态场景（订单/物流，如产品线存在）纳入二期。
+</div>
+
+<hr>
+
+<!-- ==================== 8. 风险与依赖 ==================== -->
+<h2 id="s8">8. 风险与依赖</h2>
+<div class="tbl-scroll">
+<table>
+    <tr><th style="width:20%">风险</th><th style="width:10%">概率</th><th style="width:12%">影响</th><th>应对</th></tr>
+    <tr><td>Apple 审核拒绝（营销误判）</td><td><span class="tag tag-green">低</span></td><td><span class="tag tag-red">高</span></td><td>严格限定系统/状态场景；提审材料说明触发机制为用户主动行为；避免 LA 内任何促销元素</td></tr>
+    <tr><td>客户端基础设施缺口（无 ActivityKit / 无 Extension）</td><td><span class="tag tag-orange">中</span></td><td><span class="tag tag-red">高</span></td><td>Phase 0 技术盘点先行；缺口项排入客户端版本计划，评审时给出排期</td></tr>
+    <tr><td>打开率提升不及预期（+30% 假设落空）</td><td><span class="tag tag-orange">中</span></td><td><span class="tag tag-orange">中</span></td><td>实验小流量验证；保守假设（+15%）下年化仍 +474 AB，可接受；测试窗口调整展示策略</td></tr>
+    <tr><td>iOS 用户占比远低于 40%</td><td><span class="tag tag-orange">中</span></td><td><span class="tag tag-orange">中</span></td><td>评审前拉取 device 维度真实占比；占比 <25% 时评估是否推迟或仅做能力沉淀</td></tr>
+    <tr><td>iPhone 18 灵动岛最终设计变化</td><td><span class="tag tag-orange">中</span></td><td><span class="tag tag-green">低</span></td><td>标准 Live Activity 由系统自动适配；上线前真机验证矩阵覆盖 iPhone 14 Pro~18</td></tr>
+    <tr><td>LA 更新延迟 / 更新失败导致状态过期</td><td><span class="tag tag-green">低</span></td><td><span class="tag tag-orange">中</span></td><td>APNs 失败回落普通推送；<code>staleDate</code> 保证过期展示不误导</td></tr>
+    <tr><td>与 FCM 链路并存的双通道运维成本</td><td><span class="tag tag-green">低</span></td><td><span class="tag tag-green">低</span></td><td>LA 通道仅承载状态类；token 管理与 FCM 共用基础设施模式</td></tr>
+</table>
+</div>
+
+<h3>8.2 依赖清单</h3>
+<ul>
+    <li>✅ 已有：Push by-push-id 全链路埋点、session-based 归因、策略配置表、深链规范</li>
+    <li>⏳ 待确认：iOS Notification Service Extension、ActivityKit 集成状态、APNs p8 证书、会话/询盘事件流可用性</li>
+    <li>⏳ 待拉取：iOS/Android device 占比（收益测算输入）</li>
+</ul>
+
+<hr>
+
+<!-- ==================== 9. 里程碑与排期 ==================== -->
+<h2 id="s9">9. 里程碑与排期（建议）</h2>
+<div class="tbl-scroll">
+<table>
+    <tr><th style="width:12%">阶段</th><th style="width:38%">内容</th><th style="width:12%">周期</th><th>产出</th></tr>
+    <tr><td><strong>Phase 0</strong><br><span class="tag tag-red">进行中</span></td><td>技术盘点：ActivityKit 状态、Extension、APNs 证书、事件流；拉取 iOS 占比数据</td><td>1 周</td><td>《iOS 灵动岛技术可行性评估》+ 修正后收益测算</td></tr>
+    <tr><td><strong>Phase 1</strong><br><span class="tag tag-orange">评审后启动</span></td><td>客户端原型（三态视图 + 深链）+ 后端 LA 状态服务 MVP + 埋点接入</td><td>4 周</td><td>内测版本（TestFlight）</td></tr>
+    <tr><td><strong>Phase 2</strong><br><span class="tag tag-orange">内测通过</span></td><td>AB 实验（50/50，≥4 周）+ 真机兼容矩阵（iPhone 14 Pro ~ 18）</td><td>5 周</td><td>实验结论 + 上线决策</td></tr>
+    <tr><td><strong>Phase 3</strong><br><span class="tag tag-green">实验通过</span></td><td>S1/S2 全量推全 + S3 聚合 + 收尾推送富媒体化（视 Extension 状态）+ 数据看板完善</td><td>2 周</td><td>全量上线</td></tr>
+</table>
+</div>
+<p><strong>总投入估算</strong>：客户端 3-4 人周 + 后端 2-3 人周 + 数据 1 人周 + 业务 1 人周 ≈ <strong>8 人周</strong>（不含 Phase 0 缺口项的额外排期）。</p>
+
+<hr>
+
+<!-- ==================== 10. 评审问题清单 ==================== -->
+<h2 id="s10">10. 评审问题清单（8 月底评审过一遍）</h2>
+<div class="tbl-scroll">
+<table>
+    <tr><th style="width:55%">问题</th><th style="width:20%">回答方</th><th>优先级</th></tr>
+    <tr><td>1. iOS 用户占比真实值是多少？（测算关键参数，需先拉数据）</td><td>Jolyne / 数据</td><td><span class="tag tag-red">P0</span></td></tr>
+    <tr><td>2. wlw-mobile-app 是否已集成 ActivityKit？iOS 最低支持版本？（陈峰）</td><td>陈峰</td><td><span class="tag tag-red">P0</span></td></tr>
+    <tr><td>3. iOS Notification Service Extension 是否存在？（决定收尾推送富媒体化）（陈峰）</td><td>陈峰</td><td><span class="tag tag-red">P0</span></td></tr>
+    <tr><td>4. APNs p8 证书是否已配置？FCM 链路与 APNs 旁路如何协同？</td><td>杨焱</td><td><span class="tag tag-red">P0</span></td></tr>
+    <tr><td>5. 会话/询盘事件流是否已存在于后端架构？（LA 状态服务接入成本）</td><td>杨焱</td><td><span class="tag tag-red">P0</span></td></tr>
+    <tr><td>6. 单用户 24h LA 启动上限（建议 ≤3）与疲劳度体系是否一致？</td><td>Jolyne / 业务</td><td><span class="tag tag-orange">P1</span></td></tr>
+    <tr><td>7. "LA 替代重复推送"对现有策略表/发送日志的影响？（监控口径变更）</td><td>Jolyne / 数据</td><td><span class="tag tag-orange">P1</span></td></tr>
+    <tr><td>8. UC-448 优先级 Trivial 是否提升？（建议至少 Major）</td><td>Jolyne</td><td><span class="tag tag-orange">P1</span></td></tr>
+    <tr><td>9. S3 多会话聚合是否一期做？（涉及极简式视图与并发管理）</td><td>Jolyne / 陈峰</td><td><span class="tag tag-orange">P1</span></td></tr>
+    <tr><td>10. iPhone 18（iOS 27）真机适配是否纳入本版本验收矩阵？</td><td>陈峰</td><td><span class="tag tag-green">P2</span></td></tr>
+</table>
+</div>
+
+<div class="callout-info">
+    <strong>下一步（评审前）</strong>：① Jolyne 拉取 iOS device 占比数据并回填 §3 测算；② 陈峰完成 Phase 0 技术盘点（问题 2/3）；③ 杨焱确认 APNs/事件流现状（问题 4/5）；④ 汇总后更新本 PRD 至 v0.2 提交评审。
+</div>
+
+<div class="footer">
+    <p>PRD v0.1 | 2026-08-20 | 关联: UC-448, 富文本推送调研报告(2026-08-17), Push CW33 WoW 分析(2026-08-19) | 数据口径: active_buyers.channel='push' (CW33 日均, T-3 完备)</p>
+</div>
+
+</body>
+</html>
