@@ -59,7 +59,8 @@
     <span><strong>关联工单</strong>: <a href="https://visable.atlassian.net/browse/UC-448" target="_blank">UC-448</a></span>
     <span><strong>状态</strong>: <span class="tag tag-orange">Draft — 待评审</span></span>
         <span><strong>工单 Assignee</strong>: Jolyne Zhang（2026-08-20 修正，原 Kailiang 为 BI）</span>
-    <span><strong>负责人</strong>: Jolyne Zhang (业务) / 陈峰 (客户端·V技术) / 杨焱 (后端·V技术) / Kailiang Zhan (BI)</span>
+            <span><strong>开发确认</strong>: App 前端 = 陈峰 / App 后端 = 杨焱（2026-08-20）</span>
+    <span><strong>负责人</strong>: Jolyne Zhang (业务) / 陈峰 (App 前端·V技术) / 杨焱 (App 后端·V技术) / Kailiang Zhan (BI)</span>
     <span><strong>版本</strong>: v0.1 (2026-08-20)</span>
     <span><strong>评审计划</strong>: 2026 年 8 月底</span>
 </div>
@@ -408,7 +409,7 @@
 <h3>5.2 分工矩阵（RACI）</h3>
 <div class="tbl-scroll">
 <table>
-    <tr><th style="width:22%">工作项</th><th style="width:13%">业务（Jolyne）</th><th style="width:13%">客户端（陈峰·V技术）</th><th style="width:13%">后端（杨焱·V技术）</th><th style="width:13%">数据（Jolyne+凯亮）</th><th>说明</th></tr>
+    <tr><th style="width:22%">工作项</th><th style="width:13%">业务（Jolyne）</th><th style="width:13%">App 前端（陈峰·V技术）</th><th style="width:13%">App 后端（杨焱·V技术）</th><th style="width:13%">数据（Jolyne+凯亮）</th><th>说明</th></tr>
     <tr><td>场景定义与业务规则</td><td><strong>R/A</strong></td><td>C</td><td>C</td><td>C</td><td>§4 内容，评审后定稿</td></tr>
     <tr><td>收益测算与实验设计</td><td><strong>R/A</strong></td><td>—</td><td>—</td><td>C</td><td>AB 实验方案、样本量、指标口径</td></tr>
     <tr><td>ActivityKit + WidgetKit 集成</td><td>—</td><td><strong>R/A</strong></td><td>—</td><td>—</td><td>灵动岛三态视图（compact/minimal/expanded）+ 锁屏视图</td></tr>
@@ -424,7 +425,7 @@
 </div>
 <p style="font-size:12px;color:#6c757d;">R=Responsible（执行） A=Accountable（负责/拍板） C=Consulted（咨询） I=Informed（知会）</p>
 
-<h3>5.3 客户端技术要点（陈峰）</h3>
+<h3>5.3 App 前端技术要点（陈峰）</h3>
 <ul>
     <li><strong>ActivityAttributes / ContentState</strong>：静态数据（会话 ID、产品信息）与动态数据（消息数、等待时长）分离，支持 <code>staleDate</code> 过期展示。</li>
     <li><strong>三态视图</strong>：compact（灵动岛左/右端）+ minimal（多活动折叠）+ expanded（长按展开）+ 锁屏横幅；使用 <code>ContainerRelativeShape</code> 匹配圆角。</li>
@@ -433,7 +434,7 @@
     <li><strong>并发管理</strong>：单用户 ≤5 个活动，超出时按"最旧优先"结束或聚合为 S3 汇总卡。</li>
 </ul>
 
-<h3>5.4 后端技术要点（杨焱 · V技术）</h3>
+<h3>5.4 App 后端技术要点（杨焱 · V技术）</h3>
 <ul>
     <li><strong>LA token 管理</strong>：客户端启动 LA 后上报 pushToken → 服务端存储并绑定会话；与 FCM token 分开管理。</li>
     <li><strong>事件驱动更新</strong>：会话服务/消息服务的事件流 → LA 状态服务 → APNs 下发（push-type: liveactivity）。</li>
