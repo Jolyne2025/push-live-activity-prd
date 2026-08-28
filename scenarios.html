@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UC-448 Live Activity 场景参考：围绕询盘前中后的业务场景（2026-08-28）</title>
+<style>
+  body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; margin: 0; background: #f5f6f8; color: #24292f; }
+  .container { max-width: 980px; margin: 0 auto; padding: 24px 20px 60px; }
+  .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: #fff; padding: 28px 32px; border-radius: 12px; margin-bottom: 20px; }
+  .header h1 { margin: 0 0 8px; font-size: 22px; }
+  .header .meta { font-size: 12px; color: #aab4c8; line-height: 1.8; }
+  .header .meta a { color: #8ab4f8; text-decoration: none; }
+  .card { background: #fff; border-radius: 10px; padding: 20px 24px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+  .card h2 { font-size: 16px; margin: 0 0 12px; color: #1a1a2e; border-left: 4px solid #4a6cf7; padding-left: 10px; }
+  .card h3 { font-size: 14px; margin: 16px 0 8px; color: #444; }
+  .tbl-scroll { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; }
+  th { background: #f0f2f7; color: #333; font-weight: 600; padding: 8px 10px; border: 1px solid #e1e4ea; text-align: left; white-space: nowrap; }
+  td { padding: 7px 10px; border: 1px solid #e1e4ea; vertical-align: top; }
+  tr:nth-child(even) td { background: #fafbfd; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+  .tag-green { background: #e6f4ea; color: #137333; }
+  .tag-orange { background: #fef7e0; color: #b06000; }
+  .tag-red { background: #fce8e6; color: #c5221f; }
+  .tag-blue { background: #e8f0fe; color: #1a56db; }
+  .conclusion { border: 1px solid #d4e4d6; background: #f0f9f1; border-radius: 8px; padding: 14px 18px; margin: 12px 0; font-size: 14px; }
+  .conclusion b { color: #137333; }
+  .warn { border: 1px solid #f5d9d9; background: #fdf2f2; border-radius: 8px; padding: 12px 16px; margin: 10px 0; font-size: 13px; color: #8c1d18; }
+  .note { font-size: 12px; color: #6c757d; line-height: 1.7; }
+  ul { margin: 6px 0; padding-left: 20px; }
+  li { margin: 4px 0; font-size: 13px; line-height: 1.6; }
+  .kpi-row { display: flex; gap: 12px; flex-wrap: wrap; margin: 12px 0; }
+  .kpi { flex: 1; min-width: 160px; background: #f8f9fc; border: 1px solid #e6e9f0; border-radius: 8px; padding: 14px 16px; text-align: center; }
+  .kpi .v { font-size: 24px; font-weight: 700; color: #1a1a2e; }
+  .kpi .l { font-size: 12px; color: #6c757d; margin-top: 4px; }
+  .kpi .s { font-size: 11px; color: #4a6cf7; margin-top: 2px; }
+  a { color: #1a56db; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .en { color: #4a6cf7; font-size: 12px; display: block; margin-top: 2px; font-weight: 400; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <h1>UC-448 Live Activity 场景参考 — 围绕询盘前中后的业务场景 <span class="en" style="color:#aab4c8;display:inline;font-size:12px;margin-left:8px;">Scenario Reference: Inquiry-First Use Cases</span></h1>
+  <div class="meta">
+    关联工单：<a href="https://visable.atlassian.net/browse/UC-448" target="_blank">UC-448</a> &nbsp;|&nbsp; 日期：2026-08-28 &nbsp;|&nbsp; 用途：转交 Utkarsha 跟进前的场景梳理（买卖家系统消息产品）
+  </div>
+</div>
+
+<div class="card">
+  <h2>一、核心判断：Live Activity 是「常驻状态」，不是「消息提醒」<span class="en">Key judgment: LA is a persistent state, not a message alert</span></h2>
+  <div class="conclusion">
+    <b>Live Activity 适合「用户主动跟踪、持续数小时、状态会推进」的场景；不适合「一次性事件提醒」。</b>
+    因此围绕询盘（inquiry）前中后的交易状态跟踪是 LA 的主场，而「通知已有的 push 消息提醒」（如新消息到达）不适合用 LA 承载——即时事件用一次性 push 即可，常驻界面反而挤占灵动岛/锁屏，且 Apple 禁止在锁屏展示消息正文。
+  </div>
+  <div class="tbl-scroll">
+  <table>
+    <tr><th style="width:22%">维度 Dimension</th><th>Live Activity（灵动岛/锁屏常驻）</th><th>Push Notification（一次性通知）</th></tr>
+    <tr><td>本质 Nature</td><td>正在进行的状态 ongoing situation</td><td>一次性事件提醒 one-off event</td></tr>
+    <tr><td>生命周期</td><td>8h 灵动岛 + 4h 宽限（锁屏合计 12h），最长可设 16h</td><td>秒级/分钟级消失</td></tr>
+    <tr><td>触发要求</td><td><b>必须用户主动行为触发</b>（Apple 红线）</td><td>服务端随时可发</td></tr>
+    <tr><td>内容限制</td><td>锁屏不显示敏感数据（消息正文不可上岛），仅聚合状态</td><td>可带标题/正文（有大小限制）</td></tr>
+    <tr><td>典型形态</td><td>倒计时 / 进度条 / 状态推进 / 多事件聚合</td><td>新消息、交易提醒、营销触达</td></tr>
+    <tr><td>营销场景</td><td><b>Apple 明令禁止</b>（促销/优惠/广告）</td><td>允许（需授权）</td></tr>
+  </table>
+  </div>
+</div>
+
+<div class="card">
+  <h2>二、围绕询盘的场景参考 <span class="en">Scenario candidates around the inquiry lifecycle</span></h2>
+  <p style="font-size:13px;color:#6c757d;margin:0 0 10px;">买卖家双端 × 询盘前/中/后。一期建议聚焦带 ★ 的场景；询盘前阶段因无「用户主动跟踪行为」且营销被 Apple 禁止，<b>不建议做 LA</b>。</p>
+  <div class="tbl-scroll">
+  <table>
+    <tr>
+      <th style="width:5%">阶段</th><th style="width:24%">场景 Scenario</th><th style="width:14%">触发（用户主动行为）</th><th>Live Activity 展示内容</th><th style="width:7%">优先级</th>
+    </tr>
+    <tr>
+      <td rowspan="3">询盘后<br><span class="en">Post-inquiry</span></td>
+      <td><b>B1 询盘等待卖家回复</b><span class="en">Inquiry awaiting seller reply（原 S1，保留）</span></td>
+      <td>买家提交询盘 / Contact Supplier</td>
+      <td>常驻显示「询盘已发出，等待卖家回复」+ 已等待时长；状态自动推进：已发出 → 卖家已读 → 卖家已回复；tap 直达会话页</td>
+      <td><span class="tag tag-green">★ 一期</span></td>
+    </tr>
+    <tr>
+      <td><b>B2 报价有效期倒计时</b><span class="en">Quote validity countdown</span></td>
+      <td>买家收到卖家报价</td>
+      <td>展示报价金额 + 剩余有效期倒计时（本地 Timer，无需网络更新）；紧迫感驱动买家尽快决策；到期自动结束或转为锁屏状态</td>
+      <td><span class="tag tag-green">★ 一期</span></td>
+    </tr>
+    <tr>
+      <td><b>B3 RFQ 报价聚合</b><span class="en">RFQ quote aggregation</span></td>
+      <td>买家发布 RFQ</td>
+      <td>聚合展示「已收到 N 份报价」，报价陆续到达时实时更新；类比 Airship 体育多赛事聚合（3.7x 会话）</td>
+      <td><span class="tag tag-orange">二期候选</span></td>
+    </tr>
+    <tr>
+      <td rowspan="2">询盘时/后<br><span class="en">At/Post-inquiry</span></td>
+      <td><b>W1 新询盘待处理聚合（卖家）</b><span class="en">New inquiries aggregation (seller)</span></td>
+      <td>卖家收到新询盘（首个询盘触发启动）</td>
+      <td>常驻聚合「N 条新询盘待处理」，处理进度 M/N 实时更新；<b>替代逐条 MESSAGE_SENT push</b>，减少通知疲劳</td>
+      <td><span class="tag tag-green">★ 一期</span></td>
+    </tr>
+    <tr>
+      <td><b>W2 报价已读回执（卖家）</b><span class="en">Quote viewed receipt (seller)</span></td>
+      <td>卖家发出报价</td>
+      <td>报价已发送 → 买家已查看报价 → 「已读」状态推进；提示卖家跟进时机（报价被查看但未回复时）</td>
+      <td><span class="tag tag-orange">二期候选</span></td>
+    </tr>
+    <tr>
+      <td>询盘前<br><span class="en">Pre-inquiry</span></td>
+      <td><b>（不建议）</b>发现/浏览阶段的任何 LA<span class="en">Discovery/browsing-phase LA</span></td>
+      <td>—</td>
+      <td>无用户主动「跟踪行为」可绑定，触发不满足 Apple 红线；营销类（RECOMMENDATION / RFQ_marketing / TRENDING）被 Apple 明确禁止</td>
+      <td><span class="tag tag-red">不做</span></td>
+    </tr>
+  </table>
+  </div>
+</div>
+
+<div class="card">
+  <h2>三、明确不适合 LA 的场景（维持 push）<span class="en">Explicitly NOT for LA — keep push</span></h2>
+  <ul>
+    <li><b>新消息到达逐条提醒</b>：即时事件，push 已覆盖；且 Apple 禁止锁屏展示消息正文，LA 只能显示「有 N 条新消息」这类聚合状态，常驻反而挤占界面空间。<span class="en">One-off "new message" alerts — instant events, push suffices; message bodies cannot appear on Lock Screen.</span></li>
+    <li><b>营销/促销/推荐类</b>（RECOMMENDATION / RFQ_marketing / TRENDING）：Apple 红线，明确禁止。<span class="en">Marketing/promo/recommendation — banned by Apple.</span></li>
+    <li><b>已读回执等一次性事件</b>：事件本身无持续状态，无 LA 价值。<span class="en">One-shot receipts — no persistent state to track.</span></li>
+    <li><b>高频变化内容</b>：LA 更新预算有限（约 4KB / 每分钟有节流），不适合需要秒级刷新的内容。<span class="en">High-frequency content — LA update budget is limited.</span></li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>四、行业佐证 <span class="en">Industry evidence</span></h2>
+  <div class="kpi-row">
+    <div class="kpi"><div class="v">+50%</div><div class="l">订单追踪类 LA 的会话增量（Airship 2024）<span class="s">与「交易状态跟踪」同类</span></div></div>
+    <div class="kpi"><div class="v">3.7x</div><div class="l">体育多赛事聚合 LA 的设备会话倍数（Airship 2024）<span class="s">与「聚合卡片」同类</span></div></div>
+    <div class="kpi"><div class="v">30–60%</div><div class="l">LA tap-through → App 打开率（MWM）</div></div>
+    <div class="kpi"><div class="v">8–12h</div><div class="l">LA 常驻窗口 vs push 秒级消失</div></div>
+  </div>
+  <ul>
+    <li><b>Apple HIG / ActivityKit</b>：LA 定位为「用户正在跟踪的持续任务」（workout、订单、航班、计时器）——与询盘状态跟踪同构。</li>
+    <li><b>Airship 2024</b>：QSR 订单追踪启用 LA 后客户会话 +50%；体育类 App 启用 LA 设备会话 3.7x（聚合形态）。</li>
+    <li><b>Pushwoosh / OneSignal 用例库</b>：倒计时（促销限时、抢购）与进度（配送、众筹）是 LA 两大主流形态，均需用户主动行为触发。</li>
+    <li><b>本机测算</b>：灵动岛用户约 7,866（iOS 用户 47.9%），iOS 17+ 自动随 Push 授权覆盖 99.95%（详见用户基数报告）。</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>五、建议 <span class="en">Recommendations</span></h2>
+  <div class="conclusion">
+    <b>一期聚焦 3 个场景：B1 询盘等待回复（买家）+ B2 报价倒计时（买家）+ W1 新询盘聚合（卖家）。</b>
+    全部符合「用户主动行为触发 + 持续状态跟踪」原则，且与现有 UNANSWERED / MESSAGE_SENT 策略可复用（strategy_id 继承、by-push-id 归因不变）。工单描述中「推送场景」表格待 Utkarsha 确认后按本参考填充。
+  </div>
+  <div class="note">
+    注：本报告为场景设计参考，非行业实证数据——B2B 询盘场景的 LA 公开案例稀缺，映射逻辑基于「交易状态跟踪」「聚合」「倒计时」三类通用形态的行业数据外推，落地前建议以一期 AB 实验验证（实验方案已在工单中：iOS 16+ 用户 50% AB 两周）。
+  </div>
+</div>
+
+</div>
+</body>
+</html>
